@@ -9,6 +9,10 @@ class Enrollment {
   static convertFromJSON(enrollmentJSON, number, course) {
     return new Enrollment(number, enrollmentJSON.valor, enrollmentJSON.id, course);
   }
+
+  json() {
+    return {number: this.number, grade: this.grade, student: this.student, course: this.course};
+  }
 }
 
 module.exports = Enrollment;

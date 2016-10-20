@@ -2,7 +2,7 @@ var connection = require('./MySQLConnector.js');
 var Course = require('./Course.js');
 
 class CourseDAO {
-  findAll() {
+  findAll(callback) {
     connection.query("SELECT * FROM curso", function(error, rows, fields) {
       if (error) {
         throw error;
@@ -13,7 +13,9 @@ class CourseDAO {
         var course = new Course(tuple.id, tuple.curso);
         courses.push(course);
       }
-      return courses;
+      if (callback) {
+        callback(courses);
+      }
     });
   }
 
@@ -23,12 +25,12 @@ class CourseDAO {
         throw error;
       }
       if (callback) {
-        callback();
+        callback(data);
       }
     });
   }
 
-  saveAll(courses) {
+  saveAll(courses, callback) {
     var sql = "INSERT INTO curso (id, curso) VALUES ";
     for (var indx = 0; indx < courses.length; indx++) {
       var course = courses[indx];
@@ -40,6 +42,9 @@ class CourseDAO {
     connection.query(sql, function(error, data) {
       if (error) {
         throw error;
+      }
+      if (callback) {
+        callback(data);
       }
     });
   }

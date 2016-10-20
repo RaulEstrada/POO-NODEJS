@@ -1,42 +1,44 @@
-var CourseDAO = require('./CourseDAO.js');
-var Course = require('./Course.js');
-var EnrollmentDAO = require('./EnrollmentDAO.js');
-var Enrollment = require('./Enrollment.js');
+const CourseDAO = require('./CourseDAO.js'),
+  Course = require('./Course.js'),
+  EnrollmentDAO = require('./EnrollmentDAO.js'),
+  Enrollment = require('./Enrollment.js'),
+  formidable = require('formidable'),
+  fs = require('fs');
 
 class EnrollmentHandler {
-  processRequest(req, res) {
-    if (req.method == "POST") {
-      this.loadEnrollments(req, res);
-    } else if (req.method == "GET") {
-      this.getAllEnrollments(req, res);
-    }
-  }
 
-  loadEnrollments(req, res) {
+  postAllEnrollments(req, res) {
+    var form = new formidable.IncomingForm();
     var self = this;
-    var body = [];
-    req.on('data', function(chunk) {
-      body.push(chunk);
-    }).on('end', function() {
-      body = Buffer.concat(body).toString();
-      var indx = body.indexOf("{");
-      body = body.substring(indx, body.length);
-      indx = body.indexOf("------WebKitFormBoundary");
-      body = body.substring(0, indx);
-      var json = JSON.parse(body);
-      var course = Course.convertFromJSON(json);
-      var enrollments = self.createModelFromJSON(json.notas, json.convocatoria, json.id);
-      new CourseDAO().saveAll([course]);
-      new EnrollmentDAO().saveAll(enrollments);
-      console.log(course);
-      console.log(enrollments);
-    });
+    form.parse(req, function(err, fields, files) {
+      fs.readFile(files.ficheroConvocatoria.path,'utf8', (err,datos) => {
+          if (err) {
+            throw err;
+          }
+          let json = JSON.parse(datos);
+          var course = Course.convertFromJSON(json);
+          var enrollments = self.createModelFromJSON(json.notas, json.convocatoria, json.id);
+          new CourseDAO().saveAll([course], function(dataCourse) {
+            new EnrollmentDAO().saveAll(enrollments, function(dataEnrollment) {
+              res.jsonp({course: course.json(), enrollments: enrollments.map((x) => x.json())});
+            });
+          });
+    })});
   }
 
   getAllEnrollments(req, res) {
-    var enrollments = new EnrollmentDAO().findAll();
-    res.writeHead(200, {'Content-Type': 'application/json'});
-    res.end(JSON.stringify(enrollments));
+    var enrollments = new EnrollmentDAO().findAll(function(data) {
+      var response = {};
+      response["enrollments"] = data.map((x) => x.json());
+      res.jsonp(response);
+    });
+  }
+
+  deleteAllEnrollments(req, res) {
+    var enrollmentDAO = new EnrollmentDAO();
+    enrollmentDAO.removeAll(function(data) {
+      res.jsonp({data: data});
+    })
   }
 
   createModelFromJSON(jsonEnrollments, number, course) {

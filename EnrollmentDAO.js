@@ -2,7 +2,7 @@ var connection = require('./MySQLConnector.js');
 var Enrollment = require('./Enrollment.js');
 
 class EnrollmentDAO {
-  findAll() {
+  findAll(callback) {
     connection.query("SELECT * FROM nota", function(error, rows, fields) {
       if (error) {
         throw error;
@@ -14,7 +14,9 @@ class EnrollmentDAO {
           tuple.estudiante);
         enrollments.push(enrollment);
       }
-      return enrollments;
+      if (callback) {
+        callback(enrollments);
+      }
     });
   }
 
@@ -24,12 +26,12 @@ class EnrollmentDAO {
         throw error;
       }
       if (callback) {
-        callback();
+        callback(data);
       }
     });
   }
 
-  saveAll(enrollments) {
+  saveAll(enrollments, callback) {
     var sql = "INSERT INTO nota (convocatoria, nota, curso, estudiante) VALUES ";
     for (var indx = 0; indx < enrollments.length; indx++) {
       var enrollment = enrollments[indx];
@@ -41,6 +43,9 @@ class EnrollmentDAO {
     connection.query(sql, function(error, data) {
       if (error) {
         throw error;
+      }
+      if (callback) {
+        callback(data);
       }
     });
   }

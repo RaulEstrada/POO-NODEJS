@@ -1,6 +1,7 @@
 const express = require('express'),
   StudentHandler = require('./StudentHandler.js'),
   EnrollmentHandler = require('./EnrollmentHandler.js'),
+  CourseHandler = require('./CourseHandler.js'),
   CleanHandler = require('./CleanHandler.js'),
   app = express();
 
@@ -21,7 +22,16 @@ app.post('/convocatorias', function(req, res) {
 });
 app.delete('/convocatorias', function(req, res) {
   new EnrollmentHandler().deleteAllEnrollments(req, res);
-})
+});
+app.get('/cursos', function(req, res) {
+  new CourseHandler().getAllCourses(req, res);
+});
+app.post('/cursos', function(req, res) {
+  new CourseHandler().postAllCourses(req, res);
+});
+app.delete('/cursos', function(req, res) {
+  new CourseHandler().deleteAllCourses(req, res);
+});
 app.get('/clean', function(req, res) {
   new CleanHandler().processRequest(req, res);
 });

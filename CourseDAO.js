@@ -2,30 +2,42 @@ var connection = require('./MySQLConnector.js');
 var Course = require('./Course.js');
 
 class CourseDAO {
+  findByID(id, callback) {
+    var self = this;
+    connection.query("SELECT * FROM curso WHERE id = '" + id + "'", function(error, rows, fields) {
+      if (error) {
+        throw error;
+      }
+      self.processData(rows, callback, error);
+    })
+  }
+
   findAll(callback) {
+    var self = this;
     connection.query("SELECT * FROM curso", function(error, rows, fields) {
       if (error) {
         throw error;
       }
-      var courses = [];
-      for (var indx = 0; indx < rows.length; indx++) {
-        var tuple = rows[indx];
-        var course = new Course(tuple.id, tuple.curso);
-        courses.push(course);
-      }
-      if (callback) {
-        callback(courses);
-      }
+      self.processData(rows, callback, error);
     });
+  }
+
+  processData(rows, callback, error) {
+    var list = [];
+    for (var indx = 0; indx < rows.length; indx++) {
+      var tuple = rows[indx];
+      var course = new Course(tuple.id, tuple.curso);
+      list.push(course);
+    }
+    if (callback) {
+      callback(error, list);
+    }
   }
 
   removeAll(callback) {
     connection.query("DELETE FROM curso", function(error, data) {
-      if (error) {
-        throw error;
-      }
       if (callback) {
-        callback(data);
+        callback(error, data);
       }
     });
   }
@@ -34,17 +46,14 @@ class CourseDAO {
     var sql = "INSERT INTO curso (id, curso) VALUES ";
     for (var indx = 0; indx < courses.length; indx++) {
       var course = courses[indx];
-      sql = sql + "('" + course.id + "', '" + course.curso + "')";
+      sql = sql + "('" + course.id + "', '" + course.course + "')";
       if (indx < courses.length-1) {
         sql = sql + ", ";
       }
     }
     connection.query(sql, function(error, data) {
-      if (error) {
-        throw error;
-      }
       if (callback) {
-        callback(data);
+        callback(error, data);
       }
     });
   }

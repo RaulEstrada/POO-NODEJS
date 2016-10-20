@@ -8,5 +8,12 @@
       <label for="ficheroEstudiantes">Fichero de estudiantes: <input id="ficheroEstudiantes" name="ficheroEstudiantes" type="file" required/></label>
       <button type="submit">Cargar</button>
     </form>
+    <form action="http://localhost:3000/convocatorias" method="post" enctype="multipart/form-data">
+      <label for="ficheroConvocatoria">Fichero de convocatoria: <input id="ficheroConvocatoria" name="ficheroConvocatoria" type="file" required/></label>
+      <button type="submit">Cargar</button>
+    </form>
+    <form action="http://localhost:3000/clean" method="post">
+      <button type="submit">Reset</button>
+    </form>
   </body>
 </html>

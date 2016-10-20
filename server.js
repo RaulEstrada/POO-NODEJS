@@ -1,27 +1,23 @@
-var http = require('http');
-var url = require('url');
-var StudentHandler = require('./StudentHandler.js');
-var EnrollmentHandler = require('./EnrollmentHandler.js');
-var CleanHandler = require('./CleanHandler.js');
+const express = require('express'),
+  StudentHandler = require('./StudentHandler.js'),
+  EnrollmentHandler = require('./EnrollmentHandler.js'),
+  CleanHandler = require('./CleanHandler.js'),
+  app = express();
 
-var processRequest = function(req, res) {
-  var requestURL = req.url;
-  switch(requestURL) {
-    case "/estudiantes":
-      new StudentHandler().processRequest(req, res);
-      break;
-    case "/convocatorias":
-      new EnrollmentHandler().processRequest(req, res);
-      break;
-    case "/clean":
-      new CleanHandler().processRequest(req, res);
-      break;
-    default:
-      res.writeHead(404, {'Content-Type': 'text/hml'});
-      res.end("Endpoint no encontrado");
-  }
-}
+app.get('/estudiantes', function(req, res){
+  new StudentHandler().getAllStudents(req, res);
+});
+app.post('/estudiantes', function(req, res) {
+  new StudentHandler().postAllStudents(req, res);
+});
+app.delete('/estudiantes', function(req, res) {
+  new StudentHandler().deleteAllStudents(req, res);
+})
+app.get('/convocatorias', function(req, res) {
+  new EnrollmentHandler().processRequest(req, res);
+});
+app.get('/clean', function(req, res) {
+  new CleanHandler().processRequest(req, res);
+});
 
-var server = http.createServer();
-server.on('request', processRequest);
-server.listen(3000);
+app.listen(3000);

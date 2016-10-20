@@ -12,6 +12,10 @@ class Student {
     return new Student(studentJSON.id, studentJSON.nombre, studentJSON.apellidos,
       studentJSON.fechaNacimiento, genero);
   }
+
+  json() {
+    return {id: this.id, name: this.name, surname: this.surname, dateOfBirth: this.dateOfBirth, gender: this.gender};
+  }
 }
 
 module.exports = Student;

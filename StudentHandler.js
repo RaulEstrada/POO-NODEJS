@@ -1,41 +1,42 @@
-var StudentDAO = require('./StudentDAO.js');
-var Student = require('./Student.js');
+const StudentDAO = require('./StudentDAO.js'),
+  Student = require('./Student.js'),
+  formidable = require('formidable'),
+  fs = require('fs');
 
 class StudentLoader {
-  processRequest(req, res) {
-    if (req.method == "POST") {
-      this.loadStudents(req, res);
-    } else if (req.method == "GET") {
-      this.getAllStudents(req, res);
-    }
-  }
-
-  loadStudents(req, res) {
+  postAllStudents(req, res) {
+    var form = new formidable.IncomingForm();
     var self = this;
-    var body = [];
-    req.on('data', function(chunk) {
-      body.push(chunk);
-    }).on('end', function() {
-      body = Buffer.concat(body).toString();
-      var indx = body.indexOf("{");
-      body = body.substring(indx, body.length);
-      indx = body.indexOf("------WebKitFormBoundary");
-      body = body.substring(0, indx);
-      console.log(body);
-      var students = self.createModelFromJSON(body);
-      new StudentDAO().saveAll(students);
-    });
+    form.parse(req, function(err, fields, files) {
+      fs.readFile(files.ficheroEstudiantes.path,'utf8', (err,datos) => {
+          if (err) {
+            throw err;
+          }
+          let json = JSON.parse(datos);
+          var students = self.createModelFromJSON(json);
+          new StudentDAO().saveAll(students, function() {
+            res.jsonp({students: students.map((x) => x.json())});
+          });
+    })});
   }
 
   getAllStudents(req, res) {
-    var students = new StudentDAO().findAll();
-    res.writeHead(200, {'Content-Type': 'application/json'});
-    res.end(JSON.stringify(students));
+    var studentDAO = new StudentDAO();
+    var students = studentDAO.findAll(function(data) {
+      var response = {};
+      response["students"] = data.map((x) => x.json());
+      res.jsonp(response);
+    });
   }
 
-  createModelFromJSON(jsonString) {
-    console.log(jsonString);
-    var json = JSON.parse(jsonString);
+  deleteAllStudents(req, res) {
+    var studentDAO = new StudentDAO();
+    studentDAO.removeAll(function(data) {
+      res.jsonp({data: data});
+    })
+  }
+
+  createModelFromJSON(json) {
     var studentsJSON = json.personas;
     var students = [];
     for (var indx = 0; indx < studentsJSON.length; indx++) {

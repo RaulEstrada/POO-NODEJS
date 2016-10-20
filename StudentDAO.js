@@ -2,7 +2,7 @@ var connection = require('./MySQLConnector.js');
 var Student = require('./Student.js');
 
 class StudentDAO {
-  findAll() {
+  findAll(callback) {
     connection.query("SELECT * FROM estudiante", function(error, rows, fields) {
       if (error) {
         throw error;
@@ -14,7 +14,9 @@ class StudentDAO {
           tuple.fecha_nacimiento, tuple.genero);
         students.push(student);
       }
-      return students;
+      if (callback) {
+          callback(students);
+      }
     });
   }
 
@@ -24,12 +26,12 @@ class StudentDAO {
         throw error;
       }
       if (callback) {
-        callback();
+        callback(data);
       }
     });
   }
 
-  saveAll(students) {
+  saveAll(students, callback) {
     var sql = "INSERT INTO estudiante (id, nombre, apellidos, fecha_nacimiento, genero) VALUES ";
     for (var indx = 0; indx < students.length; indx++) {
       var student = students[indx];
@@ -41,6 +43,9 @@ class StudentDAO {
     connection.query(sql, function(error, data) {
       if (error) {
         throw error;
+      }
+      if (callback) {
+        callback(data);
       }
     });
   }

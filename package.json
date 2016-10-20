@@ -1,0 +1,27 @@
+{
+  "name": "poo-nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.14.0",
+    "formidable": "^1.0.17",
+    "mocha": "^3.1.2",
+    "mysql": "^2.11.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RaulEstrada/POO-NODEJS.git"
+  },
+  "author": "RaulEstrada",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RaulEstrada/POO-NODEJS/issues"
+  },
+  "homepage": "https://github.com/RaulEstrada/POO-NODEJS#readme"
+}

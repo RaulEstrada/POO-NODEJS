@@ -1,7 +1,7 @@
-const CourseDAO = require('./CourseDAO.js'),
-  Course = require('./Course.js'),
-  EnrollmentDAO = require('./EnrollmentDAO.js'),
-  Enrollment = require('./Enrollment.js'),
+const CourseDAO = require('./persistency/CourseDAO.js'),
+  Course = require('./model/Course.js'),
+  EnrollmentDAO = require('./persistency/EnrollmentDAO.js'),
+  Enrollment = require('./model/Enrollment.js'),
   formidable = require('formidable'),
   fs = require('fs');
 

@@ -1,5 +1,5 @@
 var connection = require('./MySQLConnector.js');
-var Student = require('./Student.js');
+var Student = require('./../model/Student.js');
 
 class StudentDAO {
   findAll(callback) {

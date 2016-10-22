@@ -1,6 +1,6 @@
-var StudentDAO = require('./StudentDAO.js');
-var CourseDAO = require('./CourseDAO.js');
-var EnrollmentDAO = require('./EnrollmentDAO.js');
+var StudentDAO = require('./persistency/StudentDAO.js');
+var CourseDAO = require('./persistency/CourseDAO.js');
+var EnrollmentDAO = require('./persistency/EnrollmentDAO.js');
 
 class CleanHandler {
   processRequest(req, res) {

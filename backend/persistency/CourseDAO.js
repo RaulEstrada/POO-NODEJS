@@ -1,5 +1,5 @@
 var connection = require('./MySQLConnector.js');
-var Course = require('./Course.js');
+var Course = require('./../model/Course.js');
 
 class CourseDAO {
   findByID(id, callback) {

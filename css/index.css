@@ -1,0 +1,54 @@
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 31px;
+}
+
+p, a {
+  font-family: 'Dosis', sans-serif;
+  font-size: 1.25em;
+}
+
+h1 {
+  font-family: 'Anton', sans-serif;
+  font-size: 3em;
+  text-align: center;
+}
+
+p {
+  padding: 0em 5em;
+}
+
+p:first-of-type {
+  padding-top: 2em;
+}
+
+p:last-of-type {
+  padding-bottom: 2em;
+}
+
+ul {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+li {
+  width: 20em;
+  border: 1px solid #000000;
+  text-align: center;
+  margin-right: 1em;
+  padding: 1em;
+}
+
+a {
+  text-decoration: none;
+  color: #000000;
+}
+
+nav {
+  margin-bottom: 5em;
+}

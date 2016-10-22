@@ -1,0 +1,11 @@
+form, p {
+  padding-left: 5em;
+}
+
+main {
+  margin-bottom: 5em;
+}
+
+#estudiantesCursoMedias g.x g.tick text{
+  transform: rotate(90);
+}

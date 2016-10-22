@@ -1,5 +1,5 @@
-const CourseDAO = require('./CourseDAO.js'),
-  Course = require('./Course.js'),
+const CourseDAO = require('./persistency/CourseDAO.js'),
+  Course = require('./model/Course.js'),
   formidable = require('formidable'),
   fs = require('fs');
 

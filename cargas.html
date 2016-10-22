@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title>Elementos cargados</title>
+    <meta charset="UTF-8"/>
+    <meta name="author" content="Raúl Estrada Ballesteros"/>
+    <link href="https://fonts.googleapis.com/css?family=Dosis" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Anton" rel="stylesheet">
+    <link rel="stylesheet" href="css/common.css"/>
+    <link rel="stylesheet" href="css/consultaCargas.css"/>
+  </head>
+  <body>
+    <header>
+      <h1>Cargas</h1>
+      <p>En esta pantalla el usuario puede consultar los elementos cargados hasta el momento (estudiantes y cursos). Para consultar las notas
+        se debe hacer uso del módulo de consultas. En la parte inferior se pueden ver dos gráficas con estadísticas de los alumnos cargados.</p>
+    </header>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="cargar.html">Reset/Carga de ficheros</a></li>
+        <li id="activo"><a href="cargas.html">Consulta de elementos cargados</a></li>
+        <li><a href="consultas.html">Módulo de consultas</a></li>
+      </ul>
+    </nav>
+    <main>
+    <section id="cursos">
+      <h2>Cursos</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Curso</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </section>
+    <section id="estudiantes">
+      <h2>Estudiantes</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Fecha de nacimiento</th>
+            <th>Genero</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </section>
+  </main>
+  <section id="charts">
+    <header>
+      <h2>Estadísticas</h2>
+      <p>En esta sección se pueden ver dos estadísticas de los alumnos: según su género (primeras gráficas) y según su fecha de nacimiento (última).</p>
+    </header>
+    <p>Esta gráfica muestra la cantidad de hombres y mujeres cargados como estudiantes en el sistema.</p>
+    <div style id="generoChart"></div>
+    <p>La siguiente gráfica muestra la cantidad de hombres y mujeres nacidos cada año.</p>
+    <div style id="edadChart"></div>
+  </section>
+  <footer>
+    <a href="http://validator.w3.org/check/referer" hreflang="en-us"> <img src="img/valid-html5-button.png" alt="¡HTML5  válido!" height="31" width="88" /></a>
+    <a href="http://jigsaw.w3.org/css-validator/check/referer"><img style="border:0;width:88px;height:31px" src="http://jigsaw.w3.org/css-validator/images/vcss" alt="Valid CSS!" /></a>
+  </footer>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script type="text/javascript" src="js/d3.min.js"></script>
+  <script type="text/javascript" src="js/proteic.min.js"></script>
+  <script src="js/queryLoaded.js"></script>
+  </body>
+</html>

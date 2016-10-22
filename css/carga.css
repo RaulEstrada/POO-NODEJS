@@ -1,0 +1,41 @@
+#cargas {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 0em 2em;
+}
+
+#cargas form {
+  width: 45%;
+  min-width: 20em;
+}
+
+button {
+  margin-top: 0.5em;
+  padding: 1em;
+  border: 1px solid #000000;
+  cursor: pointer;;
+}
+
+#cargas button {
+  display: block;
+}
+
+.carga {
+  background: #99ff66;
+  font-weight: bold;
+}
+
+#resetButton {
+  background: #ff4d4d;
+  font-weight: bold;
+}
+
+main>form {
+  margin-top: 5em;
+}
+
+main>form {
+  text-align: center;
+}

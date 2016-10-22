@@ -1,0 +1,27 @@
+main {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+main>section {
+  width: 45%;
+  min-width: 20em;
+  vertical-align: top;
+}
+
+table {
+  width: 100%;
+  text-align: center;
+}
+
+h2 {
+  font-family: 'Anton', sans-serif;
+  font-size: 3em;
+  text-align: center;
+}
+
+#charts p {
+  padding-left: 5em;
+}

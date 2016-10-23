@@ -3,6 +3,7 @@ const express = require('express'),
   EnrollmentHandler = require('./EnrollmentHandler.js'),
   CourseHandler = require('./CourseHandler.js'),
   CleanHandler = require('./CleanHandler.js'),
+  StudentStatistics = require('./StudentStatistics.js'),
   app = express();
 
 app.all('/*', function(req, res, next) {
@@ -41,6 +42,12 @@ app.delete('/cursos', function(req, res) {
 });
 app.post('/clean', function(req, res) {
   new CleanHandler().processRequest(req, res);
+});
+app.get('/statistics/users/:userId', function(req, res) {
+  new StudentStatistics().getStudentStats(req, res);
+});
+app.get('/statistics/users', function(req, res) {
+  new StudentStatistics().getAllStudentStats(req, res);
 });
 
 app.listen(3000);

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title>Consultas</title>
+    <meta charset="UTF-8"/>
+    <meta name="author" content="Raúl Estrada Ballesteros"/>
+    <link href="https://fonts.googleapis.com/css?family=Dosis" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Anton" rel="stylesheet">
+    <link rel="stylesheet" href="css/common.css"/>
+    <link rel="stylesheet" href="css/consultas.css"/>
+  </head>
+  <body>
+    <header>
+      <h1>Consultas</h1>
+      <p>En esta pantalla el usuario puede realizar distintas consultas sobre alumnos, cursos y notas. Los resultados mostrarán distintas
+      estadísticas y gráficas realizadas usando la librería Proteic.</p>
+    </header>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="cargar.html">Reset/Carga de ficheros</a></li>
+        <li><a href="cargas.html">Consulta de elementos cargados</a></li>
+        <li id="activo"><a href="consultas.html">Módulo de consultas</a></li>
+      </ul>
+    </nav>
+    <main>
+      <section id="estudiantes">
+        <header>
+          <h2>Consultas de estudiante</h2>
+          <p>En esta sección el usuario puede acceder a consultas del estudiante. Si el usuario no introduce el ID del estudiate, la consulta devolverá
+          datos de todos los estudiantes.</p>
+        </header>
+        <form id="estudiantesForm" onsubmit="consultarEstudiante(event)">
+          <label for="estudianteID">ID del estudiante: <input type="text" id="estudianteID" name="estudianteID" placeholder="ID000"/></label>
+          <button type="submit">Buscar</button>
+        </form>
+        <p>En esta primera consulta se puede ver en una barra de gráficas la nota media de cada asignatura (sin tener en cuenta NO PRESENTADOS).</p>
+        <div id="estudiantesAsignaturasMedias"></div>
+        <p>En esta segunda consulta se puede ver en una gráfica Gauge la nota media del estudiante o conjunto de estudiantes (dependiendo del filtro), sin
+          tener en cuenta NO PRESENTADOS.</p>
+        <div id="estudiantesMedias"></div>
+        <p>En esta tercera consulta se puede ver en una gráfica de líneas las notas medias del estudiante o conjunto de estudiantes (dependiendo del filtro), sin
+          tener en cuenta NO PRESENTADOS, a lo largo de los distintos cursos académicos.</p>
+        <div id="estudiantesCursoMedias"></div>
+        <p>En esta última consulta se puede ver en una gráfica Sunburst el número de veces que el estudiante o conjunto de estudiantes (dependiendo del filtro) han
+          obtenido cada una de las distintas calificaciones alfabéticas.</p>
+        <div id="estudiantesNotasAlfabeticas"></div>
+      </section>
+      <section id="curso">
+        <header>
+          <h2>Consultas del curso académico</h2>
+          <p>En esta sección el usuario puede acceder a consultas sobre el curso académico. Si el usuario no introduce el curso académico, la consulta
+          devolverá datos de todos los cursos académicos.</p>
+        </header>
+        <form id="cursoForm" onsubmit="consultarCurso(event)">
+          <label for="cursoAcademico">Curso académico: <input type="text" id="cursoAcademico" name="cursoAcademico" placeholder="2014-15"/></label>
+          <button type="submit">Buscar</button>
+        </form>
+        <p>En esta primera consulta se puede ver en una gráfica de líneas la nota media de cada convocatoria del curso (sin tener en cuenta NO PRESENTADOS).</p>
+        <div id="cursoConvocatoriasMedias"></div>
+        <p>En esta segunda consulta se puede ver en una gráfica Gauge la nota media del curso o conjunto de cursos (dependiendo del filtro), sin
+          tener en cuenta NO PRESENTADOS.</p>
+        <div id="cursoMedias"></div>
+        <p>En esta tercera consulta se puede ver en una gráfica de barras las notas medias del curso o conjunto de cursos (dependiendo del filtro), sin
+          tener en cuenta NO PRESENTADOS, según el género de los estudiantes.</p>
+        <div id="cursoMediasGenero"></div>
+      </section>
+      <section id="asignatura">
+        <header>
+          <h2>Consultas de la asignatura</h2>
+          <p>En esta sección el usuario puede acceder a consultas sobre la asignatura. Si el usuario no introduce el ID de la asignatura, la consulta
+          devolverá datos de todas las asignaturas.</p>
+        </header>
+        <form id="asignaturaForm" onsubmit="consultarAsignatura(event)">
+          <label for="asignaturaID">ID de la asignatura: <input type="text" id="asignaturaID" name="asignaturaID" placeholder="C1"/></label>
+          <button type="submit">Buscar</button>
+        </form>
+        <p>En esta primera consulta se puede ver en una gráfica de líneas la nota media de cada curso de la asignatura (sin tener en cuenta NO PRESENTADOS).</p>
+        <div id="asignaturaConvocatoriasMedias"></div>
+        <p>En esta segunda consulta se puede ver en una gráfica Sunburst el número de notas alfabéticas de cada curso de la asignatura o
+          asignaturas (dependiendo del filtro), sin
+          tener en cuenta NO PRESENTADOS.</p>
+        <div id="asignaturaNotasAlfabeticas"></div>
+      </section>
+    </main>
+    <footer>
+      <a href="http://validator.w3.org/check/referer" hreflang="en-us"> <img src="img/valid-html5-button.png" alt="¡HTML5  válido!" height="31" width="88" /></a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer"><img style="border:0;width:88px;height:31px" src="http://jigsaw.w3.org/css-validator/images/vcss" alt="Valid CSS!" /></a>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="js/d3.min.js"></script>
+    <script type="text/javascript" src="js/proteic.min.js"></script>
+    <script src="js/consultas.js"></script>
+  </body>
+</html>

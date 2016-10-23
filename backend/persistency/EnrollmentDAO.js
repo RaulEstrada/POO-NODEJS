@@ -43,6 +43,18 @@ class EnrollmentDAO {
     });
   }
 
+  findByEstudiante(studentId, callback) {
+    var sql = "SELECT n.* FROM nota n";
+    if (studentId != null) {
+      sql = sql + " WHERE n.estudiante = '" + studentId + "'";
+    }
+    connection.query(sql, function(error, rows, fields) {
+      if (callback) {
+        callback(error, rows);
+      }
+    });
+  }
+
   removeAll(callback) {
     connection.query("DELETE FROM nota", function(error, data) {
       if (callback) {

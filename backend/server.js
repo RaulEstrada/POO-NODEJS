@@ -4,6 +4,7 @@ const express = require('express'),
   CourseHandler = require('./CourseHandler.js'),
   CleanHandler = require('./CleanHandler.js'),
   StudentStatistics = require('./StudentStatistics.js'),
+  CourseStatistics = require('./CourseStatistics.js'),
   app = express();
 
 app.all('/*', function(req, res, next) {
@@ -48,6 +49,12 @@ app.get('/statistics/users/:userId', function(req, res) {
 });
 app.get('/statistics/users', function(req, res) {
   new StudentStatistics().getAllStudentStats(req, res);
+});
+app.get('/statistics/course/:courseId', function(req, res) {
+  new CourseStatistics().getCourseStats(req, res);
+});
+app.get('/statistics/course', function(req, res) {
+  new CourseStatistics().getAllCourseStats(req, res);
 });
 
 app.listen(3000);

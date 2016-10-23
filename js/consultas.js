@@ -84,10 +84,14 @@ function crearGraficaEstudianteNotaAlfabetica(data) {
 
 function consultarCurso(event) {
   event.preventDefault();
+  var url = "http://156.35.98.14:3000/statistics/course/";
+  var course = $("#cursoAcademico").val();
+  if (course && course.trim() != "") {
+    url = url + course;
+  }
   $.ajax({
-    url: "backend/consultaCurso.php",
-    type: "get",
-    data: $("#cursoForm").serialize()
+    url: url,
+    type: "get"
   }).done(function(data) {
     crearGraficaCursoConvocatorias(data);
     crearGraficaEstudianteMedia(data, "#cursoMedias");

@@ -15,7 +15,6 @@ class StudentLoader {
           let json = JSON.parse(datos);
           var students = self.createModelFromJSON(json);
           new StudentDAO().saveAll(students, function(error, data) {
-            res.setHeader('Content-Type', 'application/json');
             var errorMsg = "";
             if (error) {
               errorMsg = "No se han podido añadir los alumnos porque hay alumnos repetidos";
@@ -28,7 +27,6 @@ class StudentLoader {
   getAllStudents(req, res) {
     var studentDAO = new StudentDAO();
     var students = studentDAO.findAll(function(error, data) {
-      res.setHeader('Content-Type', 'application/json');
       res.send({error: error, students: data.map((x) => x.json())});
     });
   }
@@ -36,7 +34,6 @@ class StudentLoader {
   deleteAllStudents(req, res) {
     var studentDAO = new StudentDAO();
     studentDAO.removeAll(function(error, data) {
-      res.setHeader('Content-Type', 'application/json');
       res.send({error: error, data: data})
     })
   }

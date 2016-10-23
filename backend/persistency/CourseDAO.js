@@ -2,12 +2,10 @@ var connection = require('./MySQLConnector.js');
 var Course = require('./../model/Course.js');
 
 class CourseDAO {
-  findByID(id, callback) {
+  findByIDAndCourse(id, course, callback) {
     var self = this;
-    connection.query("SELECT * FROM curso WHERE id = '" + id + "'", function(error, rows, fields) {
-      if (error) {
-        throw error;
-      }
+    connection.query("SELECT * FROM curso WHERE id = '" + id + "' AND curso = '" +
+     course + "'", function(error, rows, fields) {
       self.processData(rows, callback, error);
     })
   }

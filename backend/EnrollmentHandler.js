@@ -17,18 +17,20 @@ class EnrollmentHandler {
             throw err;
           }
           let json = JSON.parse(datos);
-          courseDAO.findByID(json.id, function(error, data) {
-            var enrollments = self.createModelFromJSON(json.notas, json.convocatoria, json.id);
-            if (data.length == 0) {
+          courseDAO.findByIDAndCourse(json.id, json.curso, function(error, data) {
+            var enrollments = self.createModelFromJSON(json.notas, json.convocatoria, json.curso, json.id);
+            if (!data || data.length == 0) {
               var course = Course.convertFromJSON(json);
               new CourseDAO().saveAll([course], function(errorCourse, dataCourse) {
-                new EnrollmentDAO().saveAll(enrollments, function(dataEnrollment) {
-                  res.jsonp({errorCourse: errorCourse, course: course.json(), enrollments: enrollments.map((x) => x.json())});
+                new EnrollmentDAO().saveAll(enrollments, function(errorEnrollment, dataEnrollment) {
+                  res.send({errorCourse: errorCourse, course: course.json(),
+                    enrollments: enrollments.map((x) => x.json()), errorEnrollment: errorEnrollment});
                 });
               });
             } else {
-              new EnrollmentDAO().saveAll(enrollments, function(dataEnrollment) {
-                res.jsonp({course: "", enrollments: enrollments.map((x) => x.json())});
+              new EnrollmentDAO().saveAll(enrollments, function(errorEnrollment, dataEnrollment) {
+                res.send({errorCourse: "", course: "", enrollments: enrollments.map((x) => x.json()),
+                  errorEnrollment: errorEnrollment});
               });
             }
           });
@@ -50,10 +52,10 @@ class EnrollmentHandler {
     })
   }
 
-  createModelFromJSON(jsonEnrollments, number, course) {
+  createModelFromJSON(jsonEnrollments, number, course, courseId) {
     var enrollments = [];
     for (var indx = 0; indx < jsonEnrollments.length; indx++) {
-      var enrollment = Enrollment.convertFromJSON(jsonEnrollments[indx], number, course);
+      var enrollment = Enrollment.convertFromJSON(jsonEnrollments[indx], number, course, courseId);
       enrollments.push(enrollment);
     }
     return enrollments;

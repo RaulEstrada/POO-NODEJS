@@ -75,7 +75,7 @@ describe('StudentStatsTests', function() {
             var stat = new StudentStatistics();
             var obtenido = stat.getStatsJSON("S1993");
             var asignaturaStats = obtenido.datosAsignaturas;
-            assert.equal(7, asignaturaStats["S1993"]);
+            assert.equal(7, asignaturaStats["C1993"]);
             assert.equal(3, asignaturaStats["C1994"]);
           });
         });

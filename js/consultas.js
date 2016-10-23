@@ -138,10 +138,14 @@ function crearGraficaCursoGenero(data) {
 
 function consultarAsignatura(event) {
   event.preventDefault();
+  var url = "http://156.35.98.14:3000/statistics/asignatura/";
+  var course = $("#asignaturaID").val();
+  if (course && course.trim() != "") {
+    url = url + course;
+  }
   $.ajax({
-    url: "backend/consultaAsignatura.php",
-    type: "get",
-    data: $("#asignaturaForm").serialize()
+    url: url,
+    type: "get"
   }).done(function(data) {
     crearGraficaCursosConvocatoriasAsignatura(data);
     crearGraficaAsignaturaNotas(data);

@@ -5,6 +5,7 @@ const express = require('express'),
   CleanHandler = require('./CleanHandler.js'),
   StudentStatistics = require('./StudentStatistics.js'),
   CourseStatistics = require('./CourseStatistics.js'),
+  AsignaturaStatistics = require('./AsignaturaStatistics.js'),
   app = express();
 
 app.all('/*', function(req, res, next) {
@@ -55,6 +56,12 @@ app.get('/statistics/course/:courseId', function(req, res) {
 });
 app.get('/statistics/course', function(req, res) {
   new CourseStatistics().getAllCourseStats(req, res);
+});
+app.get('/statistics/asignatura/:courseId', function(req, res) {
+  new AsignaturaStatistics().getAsignaturaStats(req, res);
+});
+app.get('/statistics/asignatura', function(req, res) {
+  new AsignaturaStatistics().getAllAsignaturaStats(req, res);
 });
 
 app.listen(3000);

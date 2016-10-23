@@ -4,7 +4,7 @@ const EnrollmentDAO = require('./persistency/EnrollmentDAO.js'),
 class CourseStatistics extends BaseStatistics {
   getCourseStats(req, res) {
     var courseId = req.params['courseId'];
-    this.getStats(req, res, studentId);
+    this.getStats(req, res, courseId);
   }
 
   getAllCourseStats(req, res) {

@@ -67,6 +67,18 @@ class EnrollmentDAO {
     });
   }
 
+  findByAsignatura(cursoId, callback) {
+    var sql = "SELECT e.*, n.* FROM nota n, estudiante e WHERE n.estudiante = e.id";
+    if (cursoId != null) {
+      sql = sql + " AND curso_id = '" + cursoId + "'";
+    }
+    connection.query(sql, function(error, rows, fields) {
+      if (callback) {
+        callback(error, rows);
+      }
+    });
+  }
+
   removeAll(callback) {
     connection.query("DELETE FROM nota", function(error, data) {
       if (callback) {

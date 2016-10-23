@@ -11,6 +11,7 @@ class EnrollmentHandler {
     var form = new formidable.IncomingForm();
     var self = this;
     var courseDAO = new CourseDAO();
+    var enrollmentDAO = new EnrollmentDAO();
     form.parse(req, function(err, fields, files) {
       fs.readFile(files.ficheroConvocatoria.path,'utf8', (err,datos) => {
           if (err) {
@@ -21,17 +22,24 @@ class EnrollmentHandler {
             var enrollments = self.createModelFromJSON(json.notas, json.convocatoria, json.curso, json.id);
             if (!data || data.length == 0) {
               var course = Course.convertFromJSON(json);
-              new CourseDAO().saveAll([course], function(errorCourse, dataCourse) {
-                new EnrollmentDAO().saveAll(enrollments, function(errorEnrollment, dataEnrollment) {
+              courseDAO.saveAll([course], function(errorCourse, dataCourse) {
+                enrollmentDAO.saveAll(enrollments, function(errorEnrollment, dataEnrollment) {
                   res.send({errorCourse: errorCourse, course: course.json(),
                     enrollments: enrollments.map((x) => x.json()), errorEnrollment: errorEnrollment});
                 });
               });
             } else {
-              new EnrollmentDAO().saveAll(enrollments, function(errorEnrollment, dataEnrollment) {
-                res.send({errorCourse: "", course: "", enrollments: enrollments.map((x) => x.json()),
-                  errorEnrollment: errorEnrollment});
-              });
+              enrollmentDAO.findCourseByNumberAndCourse(json.id, json.curso, json.convocatoria, function(errorRepeticion) {
+                if (errorRepeticion && errorRepeticion != "") {
+                  res.send({errorCourse: errorRepeticion, course: "", enrollments: [],
+                    errorEnrollment: ""});
+                } else {
+                  enrollmentDAO.saveAll(enrollments, function(errorEnrollment, dataEnrollment) {
+                    res.send({errorCourse: "", course: "", enrollments: enrollments.map((x) => x.json()),
+                      errorEnrollment: errorEnrollment});
+                  });
+                }
+              })
             }
           });
     })});

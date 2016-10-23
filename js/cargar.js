@@ -101,7 +101,8 @@ function procesarErroresNotasRepetidas(data, dialog) {
 }
 
 function procesarErrorCursoRepetido(data, dialog) {
-  if (data.errorCursoRepetido && data.errorCursoRepetido != '') {
+  if (data.errorCourse && data.errorCourse != '') {
+    dialog.empty();
     var msg = "<p>El curso ya se había subido anteriormente. No se han registrado las notas</p>";
     dialog.append(msg);
   }

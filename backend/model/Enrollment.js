@@ -8,7 +8,11 @@ class Enrollment {
   }
 
   static convertFromJSON(enrollmentJSON, number, course, courseId) {
-    return new Enrollment(number, enrollmentJSON.valor, enrollmentJSON.id, course, courseId);
+    var grade = enrollmentJSON.valor;
+    if ((isNaN(grade) && grade != "NP") || (!isNaN(grade) && (grade < 0 || grade > 10))) {
+      throw new Error("Nota inválida: " + grade);
+    }
+    return new Enrollment(number, grade, enrollmentJSON.id, course, courseId);
   }
 
   json() {

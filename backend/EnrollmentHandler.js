@@ -19,7 +19,12 @@ class EnrollmentHandler {
           }
           let json = JSON.parse(datos);
           courseDAO.findByIDAndCourse(json.id, json.curso, function(error, data) {
-            var enrollments = self.createModelFromJSON(json.notas, json.convocatoria, json.curso, json.id);
+            var enrollmentsResult = self.createModelFromJSON(json.notas, json.convocatoria, json.curso, json.id);
+            if (enrollmentsResult.errors && enrollmentsResult.errors.length > 0) {
+              res.send({errorInvalidGrade : enrollmentsResult.errors});
+              return;
+            }
+            var enrollments = enrollmentsResult.enrollments;
             if (!data || data.length == 0) {
               var course = Course.convertFromJSON(json);
               courseDAO.saveAll([course], function(errorCourse, dataCourse) {
@@ -67,11 +72,16 @@ class EnrollmentHandler {
 
   createModelFromJSON(jsonEnrollments, number, course, courseId) {
     var enrollments = [];
+    var errors = [];
     for (var indx = 0; indx < jsonEnrollments.length; indx++) {
-      var enrollment = Enrollment.convertFromJSON(jsonEnrollments[indx], number, course, courseId);
-      enrollments.push(enrollment);
+      try {
+        var enrollment = Enrollment.convertFromJSON(jsonEnrollments[indx], number, course, courseId);
+        enrollments.push(enrollment);
+      } catch (err) {
+        errors.push(err.message);
+      }
     }
-    return enrollments;
+    return {enrollments: enrollments, errors: errors};
   }
 }
 

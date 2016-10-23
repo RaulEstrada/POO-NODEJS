@@ -47,7 +47,6 @@ class EnrollmentDAO {
         sql = sql + ", ";
       }
     }
-    console.log(sql);
     connection.query(sql, function(error, data) {
       if (callback) {
         callback(error, data);

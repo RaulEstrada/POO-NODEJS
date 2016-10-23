@@ -73,11 +73,11 @@ function procesarErroresEstudiantesMissing(data, dialog) {
 }
 
 function procesarErroresNotasInvalidas(data, dialog) {
-  if (data.errorNotaInvalida && data.errorNotaInvalida.length > 0) {
-    var msg = "<p>Las siguientes notas son inválidas y no se han subido:</p><ul>";
-    for (var indx = 0; indx < data.errorNotaInvalida.length; indx++) {
-      var errorNota = data.errorNotaInvalida[indx];
-      msg = msg + "<li>" + errorNota.estudiante + ": " + errorNota.nota + "</li>";
+  if (data.errorInvalidGrade && data.errorInvalidGrade.length > 0) {
+    dialog.empty();
+    var msg = "<p>Error. Las siguientes notas son inválidas y no se procesa el fichero:</p><ul>";
+    for (var errMsg in data.errorInvalidGrade) {
+      msg = msg + "<li>" + data.errorInvalidGrade[errMsg] + "</li>";
     }
     msg = msg + "</ul>";
     dialog.append(msg);

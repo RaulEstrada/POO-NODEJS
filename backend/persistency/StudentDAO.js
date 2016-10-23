@@ -25,6 +25,22 @@ class StudentDAO {
     });
   }
 
+  findById(id, callback) {
+    connection.query("SELECT * FROM estudiante WHERE id = '" + id + "'", function(error, rows, fields) {
+      if (callback) {
+        callback(error, rows);
+      }
+    });
+  }
+
+  removeById(id, callback) {
+    connection.query("DELETE FROM estudiante WHERE id = '" + id + "'", function(error, rows, fields) {
+      if (callback) {
+        callback(error, rows);
+      }
+    });
+  }
+
   saveAll(students, callback) {
     var sql = "INSERT INTO estudiante (id, nombre, apellidos, fecha_nacimiento, genero) VALUES ";
     for (var indx = 0; indx < students.length; indx++) {

@@ -21,7 +21,19 @@ class StudentStatistics extends BaseStatistics {
         datosNotasNumericas: self.getDatosLetra(data),
         datosCursoAcademico: self.getDatosPorCursoAcademico(data)}
       );
-    })
+    });
+  }
+
+  // Este método es para las pruebas
+  getStatsJSON(studentId) {
+    var self = this;
+    var enrollmentDAO = new EnrollmentDAO();
+    enrollmentDAO.findByEstudiante(studentId, function(error, data) {
+      return {datosAsignaturas: self.getDatosAsignaturas(data),
+        notaMedia: self.getDatosMedia(data),
+        datosNotasNumericas: self.getDatosLetra(data),
+        datosCursoAcademico: self.getDatosPorCursoAcademico(data)};
+    });
   }
 
   getDatosAsignaturas(data) {

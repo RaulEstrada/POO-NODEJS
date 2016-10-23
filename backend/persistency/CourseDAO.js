@@ -20,6 +20,14 @@ class CourseDAO {
     });
   }
 
+  removeById(id, callback) {
+    connection.query("DELETE FROM curso WHERE id = '" + id + "'", function(error, rows, fields) {
+      if (callback) {
+        callback(error, rows);
+      }
+    });
+  }
+
   processData(rows, callback, error) {
     var list = [];
     for (var indx = 0; indx < rows.length; indx++) {

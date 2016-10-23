@@ -17,6 +17,15 @@ class EnrollmentDAO {
     });
   }
 
+  removeByIds(cursoId, curso, estudianteId, callback) {
+    connection.query("DELETE FROM nota WHERE curso_id = '" + cursoId + "' AND curso = '"
+      + curso + "' AND estudiante = '" + estudianteId + "'", function(error, rows, fields) {
+      if (callback) {
+        callback(error, rows);
+      }
+    });
+  }
+
   findCourseByNumberAndCourse(courseId, course, number, callback) {
     var sql = "SELECT n.* FROM nota n WHERE n.convocatoria = '" + number +
       "' AND n.curso_id = '" + courseId + "' AND n.curso = '" + course + "'";

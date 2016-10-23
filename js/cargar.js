@@ -65,12 +65,9 @@ function displaySubirNotasResult(data) {
 }
 
 function procesarErroresEstudiantesMissing(data, dialog) {
-  if (data.errorEstudianteMissing && data.errorEstudianteMissing.length > 0) {
-    var msg = "<p>Los siguientes alumnos no se han encontrado, y sus notas no se han subido:</p><ul>";
-    for (var indx = 0; indx < data.errorEstudianteMissing.length; indx++) {
-      msg = msg + "<li>" + data.errorEstudianteMissing[indx] + "</li>";
-    }
-    msg = msg + "</ul>";
+  if (data.errorEnrollment && data.errorEnrollment.length > 0) {
+    dialog.empty();
+    var msg = "<p>" + data.errorEnrollment + "</p>";
     dialog.append(msg);
   }
 }

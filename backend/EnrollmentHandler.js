@@ -23,10 +23,7 @@ class EnrollmentHandler {
             if (!data || data.length == 0) {
               var course = Course.convertFromJSON(json);
               courseDAO.saveAll([course], function(errorCourse, dataCourse) {
-                enrollmentDAO.saveAll(enrollments, function(errorEnrollment, dataEnrollment) {
-                  res.send({errorCourse: errorCourse, course: course.json(),
-                    enrollments: enrollments.map((x) => x.json()), errorEnrollment: errorEnrollment});
-                });
+                self.createEnrollments(errorCourse, course.json(), enrollmentDAO, enrollments, res);
               });
             } else {
               enrollmentDAO.findCourseByNumberAndCourse(json.id, json.curso, json.convocatoria, function(errorRepeticion) {
@@ -34,15 +31,23 @@ class EnrollmentHandler {
                   res.send({errorCourse: errorRepeticion, course: "", enrollments: [],
                     errorEnrollment: ""});
                 } else {
-                  enrollmentDAO.saveAll(enrollments, function(errorEnrollment, dataEnrollment) {
-                    res.send({errorCourse: "", course: "", enrollments: enrollments.map((x) => x.json()),
-                      errorEnrollment: errorEnrollment});
-                  });
+                  self.createEnrollments("", "", enrollmentDAO, enrollments, res);
                 }
               })
             }
           });
     })});
+  }
+
+  createEnrollments(errorCourse, courseJSON, enrollmentDAO, enrollments, res){
+    enrollmentDAO.saveAll(enrollments, function(errorEnrollment, dataEnrollment) {
+      var errorEstudianteMissing = "";
+      if (errorEnrollment && errorEnrollment != "") {
+        errorEstudianteMissing = "Error. Hay notas que hacen referencia a un estudiante que no ha sido cargado. No se procesa la subida.";
+      }
+      res.send({errorCourse: errorCourse, course: courseJSON,
+        enrollments: enrollments.map((x) => x.json()), errorEnrollment: errorEstudianteMissing});
+    });
   }
 
   getAllEnrollments(req, res) {

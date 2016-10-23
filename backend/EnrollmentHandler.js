@@ -20,15 +20,21 @@ class EnrollmentHandler {
           let json = JSON.parse(datos);
           courseDAO.findByIDAndCourse(json.id, json.curso, function(error, data) {
             var enrollmentsResult = self.createModelFromJSON(json.notas, json.convocatoria, json.curso, json.id);
-            if (enrollmentsResult.errors && enrollmentsResult.errors.length > 0) {
-              res.send({errorInvalidGrade : enrollmentsResult.errors});
+            if (enrollmentsResult.errorsInvalidGrades && enrollmentsResult.errorsInvalidGrades.length > 0) {
+              res.send({errorInvalidGrade : enrollmentsResult.errorsInvalidGrades});
               return;
             }
             var enrollments = enrollmentsResult.enrollments;
             if (!data || data.length == 0) {
-              var course = Course.convertFromJSON(json);
-              courseDAO.saveAll([course], function(errorCourse, dataCourse) {
-                self.createEnrollments(errorCourse, course.json(), enrollmentDAO, enrollments, res);
+              self.checkRepeatedGrades(self, 0, enrollmentDAO, json.notas, json.id, [], function(errorsRepeatedGrades) {
+                if (errorsRepeatedGrades && errorsRepeatedGrades.length>0) {
+                  res.send({errorsRepeatedGrades : errorsRepeatedGrades});
+                  return;
+                }
+                var course = Course.convertFromJSON(json);
+                courseDAO.saveAll([course], function(errorCourse, dataCourse) {
+                  self.createEnrollments(errorCourse, course.json(), enrollmentDAO, enrollments, res);
+                });
               });
             } else {
               enrollmentDAO.findCourseByNumberAndCourse(json.id, json.curso, json.convocatoria, function(errorRepeticion) {
@@ -36,7 +42,13 @@ class EnrollmentHandler {
                   res.send({errorCourse: errorRepeticion, course: "", enrollments: [],
                     errorEnrollment: ""});
                 } else {
-                  self.createEnrollments("", "", enrollmentDAO, enrollments, res);
+                  self.checkRepeatedGrades(self, 0, enrollmentDAO, json.notas, json.id, [], function(errorsRepeatedGrades) {
+                    if (errorsRepeatedGrades && errorsRepeatedGrades.length>0) {
+                      res.send({errorsRepeatedGrades : errorsRepeatedGrades});
+                      return;
+                    }
+                    self.createEnrollments("", "", enrollmentDAO, enrollments, res);
+                  });
                 }
               })
             }
@@ -70,18 +82,32 @@ class EnrollmentHandler {
     })
   }
 
+  checkRepeatedGrades(self, indx, enrollmentDAO, jsonEnrollments, courseId, errorsRepeatedGrades, callback) {
+    if (indx == jsonEnrollments.length) {
+      callback(errorsRepeatedGrades);
+    } else {
+      enrollmentDAO.findByStudentAndCourse(jsonEnrollments[indx].id, courseId, function(errorMsg) {
+        if (errorMsg && errorMsg != "") {
+          errorsRepeatedGrades.push(errorMsg);
+        }
+        self.checkRepeatedGrades(self, indx + 1, enrollmentDAO, jsonEnrollments, courseId, errorsRepeatedGrades, callback);
+      });
+    }
+  }
+
   createModelFromJSON(jsonEnrollments, number, course, courseId) {
     var enrollments = [];
-    var errors = [];
+    var errorsInvalidGrades = [];
+    var enrollmentDAO = new EnrollmentDAO();
     for (var indx = 0; indx < jsonEnrollments.length; indx++) {
       try {
         var enrollment = Enrollment.convertFromJSON(jsonEnrollments[indx], number, course, courseId);
         enrollments.push(enrollment);
       } catch (err) {
-        errors.push(err.message);
+        errorsInvalidGrades.push(err.message);
       }
     }
-    return {enrollments: enrollments, errors: errors};
+    return {enrollments: enrollments, errorsInvalidGrades: errorsInvalidGrades};
   }
 }
 

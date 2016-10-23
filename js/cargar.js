@@ -85,12 +85,12 @@ function procesarErroresNotasInvalidas(data, dialog) {
 }
 
 function procesarErroresNotasRepetidas(data, dialog) {
-  if (data.errorNotasRepetidas && data.errorNotasRepetidas.length > 0) {
-    var msg = "<p>Los siguientes alumnos ya tenían nota el curso y no se han añadido las nuevas:</p><ul>";
-    for (var indx = 0; indx < data.errorNotasRepetidas.length; indx++) {
-      var errorNota = data.errorNotasRepetidas[indx];
-      msg = msg + "<li>Estudiante " + errorNota.estudiante + ": Nota " + errorNota.nota + ": Curso " +
-        errorNota.curso + ": Convocatoria " + errorNota.convocatoria + "</li>";
+  if (data.errorsRepeatedGrades && data.errorsRepeatedGrades.length > 0) {
+    dialog.empty();
+    var msg = "<p>Se han encontrado notas repetidas y no se procesa el fichero:</p><ul>";
+    for (var indx = 0; indx < data.errorsRepeatedGrades.length; indx++) {
+      var errorNota = data.errorsRepeatedGrades[indx];
+      msg = msg + "<li>" + errorNota + "</li>";
     }
     msg = msg + "</ul>";
     dialog.append(msg);

@@ -29,6 +29,20 @@ class EnrollmentDAO {
     });
   }
 
+  findByStudentAndCourse(studentId, courseId, callback) {
+    var sql = "SELECT n.nota, n.convocatoria, n.estudiante, c.curso FROM nota n, curso c WHERE n.curso_id = c.id AND c.id = '" +
+      courseId + "' AND n.estudiante = '" + studentId + "' AND n.nota != 'NP' AND CAST(n.nota AS INTEGER) >= 5 LIMIT 1";
+    connection.query(sql, function(error, rows, fields) {
+      var msgError = "";
+      if (rows && rows.length > 0) {
+        var tuple = rows[0];
+        msgError = "El alumno " + studentId + " ya a recibido un " + tuple.nota + " en la convocatoria " +
+          tuple.convocatoria + " en el curso " + tuple.curso + " de la asignatura" + courseId;
+      }
+      callback(msgError);
+    });
+  }
+
   removeAll(callback) {
     connection.query("DELETE FROM nota", function(error, data) {
       if (callback) {

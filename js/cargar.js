@@ -22,8 +22,8 @@ function subirEstudiantes(event) {
     data: data
   }).done(function(data) {
     var msg = "Alumnos añadidos.";
-    if (data && data.length > 0) {
-      msg = msg + " Los siguientes ya existían: " + data.join(", ");
+    if (data.error && data.error != "") {
+      msg = data.error;
     }
     dialog.append($("<p>" + msg + "</p>"));
     dialog.dialog("open");

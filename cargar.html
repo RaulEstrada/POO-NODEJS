@@ -28,16 +28,19 @@
       </ul>
     </nav>
     <main>
-      <form action="http://156.35.98.14:3000/estudiantes" method="post" enctype="multipart/form-data">
-        <label for="ficheroEstudiantes">Fichero de estudiantes: <input id="ficheroEstudiantes" name="ficheroEstudiantes" type="file" required/></label>
-        <button type="submit">Cargar</button>
-      </form>
-      <form action="http://156.35.98.14:3000/convocatorias" method="post" enctype="multipart/form-data">
-        <label for="ficheroConvocatoria">Fichero de convocatoria: <input id="ficheroConvocatoria" name="ficheroConvocatoria" type="file" required/></label>
-        <button type="submit">Cargar</button>
-      </form>
-      <form action="http://156.35.98.14:3000/clean" method="post">
-        <button type="submit">Reset</button>
+      <section id="cargas">
+        <form onsubmit="subirEstudiantes(event)" id="subirEstudiantes" enctype="multipart/form-data">
+          <label for="ficheroEstudiantes">Fichero de estudiantes: <input id="ficheroEstudiantes" name="ficheroEstudiantes" type="file" required/></label>
+          <button class="carga" type="submit">Cargar</button>
+        </form>
+        <form onsubmit="subirNotas(event)" id="subirNotas" enctype="multipart/form-data">
+          <label for="ficheroConvocatoria">Fichero de convocatoria: <input id="ficheroConvocatoria" name="ficheroConvocatoria" type="file" required/></label>
+          <button class="carga" type="submit">Cargar</button>
+        </form>
+      </section>
+      <form id="hacerReset" onsubmit="hacerReset(event)">
+        <p>Si hace reset, perderá todos los datos cargados previamente (alumnos, cursos y notas de distintas convocatorias).</p>
+        <button id="resetButton" type="submit">Reset</button>
       </form>
     </main>
     <footer>

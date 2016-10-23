@@ -1,16 +1,12 @@
 $(document).ready(function() {
   $.ajax({
         url: "http://156.35.98.14:3000/estudiantes",
-        type: "get",
-        dataType: 'jsonp',
-        jsonpCallback: 'parseResponse',
-    });
+        type: "get"
+    }).done(parseResponse);
   $.ajax({
     url: "http://156.35.98.14:3000/cursos",
-    type: "get",
-    dataType: "jsonp",
-    jsonpCallback: "parseCursosResponse"
-  });
+    type: "get"
+  }).done(parseCursosResponse);
 });
 
 function parseResponse(json) {

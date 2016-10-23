@@ -5,6 +5,12 @@ const express = require('express'),
   CleanHandler = require('./CleanHandler.js'),
   app = express();
 
+app.all('/*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header("Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS");
+  next();
+});
 app.get('/estudiantes', function(req, res){
   new StudentHandler().getAllStudents(req, res);
 });
@@ -32,7 +38,7 @@ app.post('/cursos', function(req, res) {
 app.delete('/cursos', function(req, res) {
   new CourseHandler().deleteAllCourses(req, res);
 });
-app.get('/clean', function(req, res) {
+app.post('/clean', function(req, res) {
   new CleanHandler().processRequest(req, res);
 });
 

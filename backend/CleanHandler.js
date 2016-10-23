@@ -6,9 +6,11 @@ class CleanHandler {
   processRequest(req, res) {
     if (req.method == "POST") {
       this.cleanDatabase(req, res);
+      res.setHeader('Content-Type', 'application/json');
+      res.send({message:"Elementos eliminados"});
     } else {
-      res.writeHead(404, {'Content-Type': 'text/hml'});
-      res.end("Método no soportado en endpoint /clean");
+      res.setHeader('Content-Type', 'application/json');
+      res.send({error: "Método no soportado en endpoint /clean"});
     }
   }
 

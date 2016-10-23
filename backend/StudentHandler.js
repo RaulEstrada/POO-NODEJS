@@ -15,7 +15,8 @@ class StudentLoader {
           let json = JSON.parse(datos);
           var students = self.createModelFromJSON(json);
           new StudentDAO().saveAll(students, function() {
-            res.jsonp({students: students.map((x) => x.json())});
+            res.setHeader('Content-Type', 'application/json');
+            res.send({students: students.map((x) => x.json())});
           });
     })});
   }
@@ -25,14 +26,16 @@ class StudentLoader {
     var students = studentDAO.findAll(function(data) {
       var response = {};
       response["students"] = data.map((x) => x.json());
-      res.jsonp(response);
+      res.setHeader('Content-Type', 'application/json');
+      res.send(response);
     });
   }
 
   deleteAllStudents(req, res) {
     var studentDAO = new StudentDAO();
     studentDAO.removeAll(function(data) {
-      res.jsonp({data: data});
+      res.setHeader('Content-Type', 'application/json');
+      res.send({data: data})
     })
   }
 

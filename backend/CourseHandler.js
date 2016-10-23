@@ -16,7 +16,8 @@ class CourseHandler {
           let json = JSON.parse(datos);
           var courses = self.createModelFromJSON(json.courses);
           new CourseDAO().saveAll(courses, function(error, dataCourse) {
-            res.jsonp({error: error, courses: courses.map((x) => x.json())});
+            res.setHeader('Content-Type', 'application/json');
+            res.send({error: error, courses: courses.map((x) => x.json())});
           });
     })});
   }
@@ -25,14 +26,16 @@ class CourseHandler {
     var courses = new CourseDAO().findAll(function(error, data) {
       var response = {error: error};
       response["courses"] = data.map((x) => x.json());
-      res.jsonp(response);
+      res.setHeader('Content-Type', 'application/json');
+      res.send(response);
     });
   }
 
   deleteAllCourses(req, res) {
     var courseDAO = new CourseDAO();
     courseDAO.removeAll(function(error, data) {
-      res.jsonp({data: data, error: error});
+      res.setHeader('Content-Type', 'application/json');
+      res.send({data: data, error: error});
     })
   }
 

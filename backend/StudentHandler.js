@@ -12,7 +12,13 @@ class StudentLoader {
           if (err) {
             throw err;
           }
-          let json = JSON.parse(datos);
+          var json;
+          try {
+            json = JSON.parse(datos)
+          } catch (err) {
+            res.send({error: "Error parseando fichero JSON", students: []});
+            return;
+          }
           var students = self.createModelFromJSON(json);
           new StudentDAO().saveAll(students, function(error, data) {
             var errorMsg = "";

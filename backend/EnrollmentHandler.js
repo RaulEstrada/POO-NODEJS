@@ -17,7 +17,13 @@ class EnrollmentHandler {
           if (err) {
             throw err;
           }
-          let json = JSON.parse(datos);
+          var json;
+          try {
+            json = JSON.parse(datos)
+          } catch (err) {
+            res.send({errorEnrollment: "Error parseando el fichero JSON"});
+            return;
+          }
           courseDAO.findByIDAndCourse(json.id, json.curso, function(error, data) {
             var enrollmentsResult = self.createModelFromJSON(json.notas, json.convocatoria, json.curso, json.id);
             if (enrollmentsResult.errorsInvalidGrades && enrollmentsResult.errorsInvalidGrades.length > 0) {
@@ -68,17 +74,15 @@ class EnrollmentHandler {
   }
 
   getAllEnrollments(req, res) {
-    var enrollments = new EnrollmentDAO().findAll(function(data) {
-      var response = {};
-      response["enrollments"] = data.map((x) => x.json());
-      res.jsonp(response);
+    var enrollments = new EnrollmentDAO().findAll(function(error, data) {
+      res.send({error: error, enrollments: data.map((x) => x.json())});
     });
   }
 
   deleteAllEnrollments(req, res) {
     var enrollmentDAO = new EnrollmentDAO();
-    enrollmentDAO.removeAll(function(data) {
-      res.jsonp({data: data});
+    enrollmentDAO.removeAll(function(error, data) {
+      res.send({error: error, data: data});
     })
   }
 

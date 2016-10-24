@@ -41,10 +41,10 @@ class AsignaturaStatistics extends BaseStatistics {
       datosCursos[curso][convocatoria].sumaNotas += parseFloat(nota.nota);
     }
     var result = {};
-    for (var curso in datosCursos) {
-      result[curso] = {};
-      for (var covocatoria in datosCursos[curso]) {
-        result[curso][convocatoria] = datosCursos[curso][convocatoria].sumaNotas / datosCursos[curso][convocatoria].alumnos;
+    for (var cursoIndx in datosCursos) {
+      result[cursoIndx] = {};
+      for (var covocatoriaIndx in datosCursos[cursoIndx]) {
+        result[cursoIndx][covocatoriaIndx] = datosCursos[cursoIndx][covocatoriaIndx].sumaNotas / datosCursos[cursoIndx][covocatoriaIndx].alumnos;
       }
     }
     return result;
